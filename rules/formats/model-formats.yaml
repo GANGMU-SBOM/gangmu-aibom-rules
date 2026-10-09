@@ -1,0 +1,37 @@
+# Model file formats. A rule with the key of a built-in replaces it; a new key adds one.
+# Exported from gangmu's built-in table; tests/test_rules.py keeps the two the same.
+formats:
+  - key: gguf
+    name: 'GGUF'
+    suffixes: ['.gguf']
+    magic: {offset: 0, ascii: 'GGUF'}
+  - key: tflite
+    name: 'TensorFlow Lite'
+    suffixes: ['.tflite']
+    magic: {offset: 4, ascii: 'TFL3'}
+  - key: executorch
+    name: 'ExecuTorch'
+    suffixes: ['.pte']
+    magic: {offset: 4, ascii: 'ET12'}
+  - key: onnx
+    name: 'ONNX'
+    suffixes: ['.onnx']
+  - key: safetensors
+    name: 'safetensors'
+    suffixes: ['.safetensors']
+  - key: pytorch
+    name: 'PyTorch checkpoint'
+    suffixes: ['.pt', '.pth', '.ckpt']
+    note: 'Pickle-based format: loading it can run code. Prefer safetensors, or load it only from a source you trust.'
+  - key: keras-h5
+    name: 'Keras/HDF5'
+    suffixes: ['.h5', '.keras', '.hdf5']
+  - key: coreml
+    name: 'Core ML'
+    suffixes: ['.mlmodel']
+  - key: rknn
+    name: 'Rockchip RKNN'
+    suffixes: ['.rknn']
+  - key: mnn
+    name: 'MNN'
+    suffixes: ['.mnn']
