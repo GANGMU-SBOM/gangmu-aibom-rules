@@ -1,0 +1,100 @@
+# Inference runtimes, found by identifier in source files. Patterns are regular expressions
+# for an identifier; the scan puts the identifier boundary in front, so do not write one.
+# Exported from gangmu's built-in table; tests/test_rules.py keeps the two the same.
+runtimes:
+  - key: tflite-micro
+    name: 'TensorFlow Lite Micro'
+    patterns:
+      - 'tflite::MicroInterpreter'
+      - 'tflite::MicroMutableOpResolver'
+      - 'tensorflow/lite/micro/\w+'
+  - key: tflite
+    name: 'TensorFlow Lite'
+    patterns:
+      - 'TfLiteInterpreter\w*'
+      - 'tflite::Interpreter\b'
+      - 'tflite::InterpreterBuilder'
+      - 'tflite::FlatBufferModel'
+  - key: onnxruntime
+    name: 'ONNX Runtime'
+    patterns:
+      - 'OrtCreateSession\w*'
+      - 'onnxruntime_c_api\.h'
+      - 'Ort::Session'
+      - 'OrtGetApiBase'
+  - key: cmsis-nn
+    name: 'CMSIS-NN'
+    patterns:
+      - 'arm_convolve_s8'
+      - 'arm_convolve_s16'
+      - 'arm_fully_connected_s8'
+      - 'arm_depthwise_conv_s8\w*'
+      - 'arm_nn_\w+'
+      - 'arm_nnfunctions\.h'
+  - key: edge-impulse
+    name: 'Edge Impulse SDK'
+    patterns:
+      - 'run_classifier\w*'
+      - 'ei_impulse\w*'
+      - 'edge-impulse-sdk/\w+'
+      - 'EI_CLASSIFIER_\w+'
+  - key: microtvm
+    name: 'Apache TVM (microTVM)'
+    patterns:
+      - 'tvmgen_default_\w+'
+      - 'TVMGraphExecutor\w*'
+      - 'tvm/runtime/\w+\.h'
+  - key: nnom
+    name: 'NNoM'
+    patterns:
+      - 'nnom_model_create'
+      - 'nnom_model_run'
+      - 'nnom\.h'
+  - key: executorch
+    name: 'ExecuTorch'
+    patterns:
+      - 'executorch::\w+'
+      - 'executorch/runtime/\w+'
+  - key: llama-cpp
+    name: 'llama.cpp / ggml'
+    patterns:
+      - 'llama_model_load\w*'
+      - 'llama_load_model\w*'
+      - 'llama_init_from_\w+'
+      - 'ggml_init\b'
+      - 'gguf_init_from_file'
+  - key: ncnn
+    name: 'ncnn'
+    patterns:
+      - 'ncnn::Net\b'
+      - 'ncnn/net\.h'
+  - key: mnn
+    name: 'MNN'
+    patterns:
+      - 'MNN::Interpreter'
+      - 'MNN/Interpreter\.hpp'
+  - key: esp-dl
+    name: 'ESP-DL'
+    patterns:
+      - 'dl::Model\b'
+      - 'dl_tensor\w*'
+      - 'esp-dl/\w+'
+  - key: stm32-ai
+    name: 'STM32Cube.AI (X-CUBE-AI)'
+    patterns:
+      - 'ai_network_create\w*'
+      - 'ai_platform\.h'
+      - 'stai_network_\w+'
+      - 'ai_\w+_run\b'
+  - key: rknn
+    name: 'Rockchip RKNN runtime'
+    patterns:
+      - 'rknn_init'
+      - 'rknn_run'
+      - 'rknn_api\.h'
+  - key: tensorflow-c
+    name: 'TensorFlow (C API)'
+    patterns:
+      - 'TF_NewGraph'
+      - 'TF_NewSession\w*'
+      - 'tensorflow/c/c_api\.h'

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gangmu-aibom-rules"
+version = "2026.10.9"
+description = "Free AIBOM rule base for gangmu: the model formats and inference runtimes gangmu aibom looks for, as data"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "CDLA-Permissive-2.0 (rules); Apache-2.0 (packaging code)" }
+keywords = ["aibom", "machine-learning", "tinyml", "cyclonedx", "embedded", "gangmu"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Natural Language :: Chinese (Simplified)",
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Homepage = "https://github.com/GANGMU-SBOM/gangmu-aibom-rules"
+Tool = "https://github.com/GANGMU-SBOM/gangmu"
+Issues = "https://github.com/GANGMU-SBOM/gangmu-aibom-rules/issues"
+
+[project.entry-points."gangmu.rule_packs"]
+aibom = "gangmu_aibom_rules:path"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "gangmu-sbom @ git+https://github.com/GANGMU-SBOM/gangmu@main"]
