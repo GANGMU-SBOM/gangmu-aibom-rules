@@ -23,6 +23,12 @@ dot), an optional `magic` (`offset` plus `ascii` or `hex`; a match is "found by 
 **An inference runtime** (`runtimes/*.yaml`, a list under `runtimes:`): `key`, `name`, and `patterns`, regular
 expressions for identifiers. The scan puts the identifier boundary in front, so do not write one.
 
+Beyond the built-in tables the pack adds formats (ncnn `.param` and ONNX Runtime `.ort`, both by file signature; TNN,
+Tengine, Kendryte kmodel, Hailo HEF, PaddlePaddle, Caffe and pickle/joblib by extension) and runtimes (OpenVINO,
+TensorRT, Paddle Lite, TNN, MACE, nncase, Tengine, XNNPACK, Arm NN, HailoRT, whisper.cpp, LibTorch, LiteRT). Identifiers and
+magic bytes were checked against the upstream sources. kmodel and HEF have identifier constants upstream but no sample file
+to confirm their byte order, so they are matched by extension only.
+
 A runtime is recognised by an identifier in a source file; that does not mean it is in the build. Detections that
 need to read content (a TensorFlow Lite model compiled into a C array, the architecture in a GGUF header) stay
 in the tool. Rules: CDLA-Permissive-2.0; packaging code: Apache-2.0. See [CONTRIBUTING.md](CONTRIBUTING.md).

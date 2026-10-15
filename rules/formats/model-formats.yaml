@@ -35,3 +35,33 @@ formats:
   - key: mnn
     name: 'MNN'
     suffixes: ['.mnn']
+  - key: ncnn-param
+    name: 'ncnn model (text .param)'
+    magic: {offset: 0, ascii: '7767517'}
+    note: 'The .param file of an ncnn model; the weights are in a separate .bin file that gangmu does not tell apart from other binaries.'
+  - key: onnxruntime-ort
+    name: 'ONNX Runtime format'
+    suffixes: ['.ort']
+    magic: {offset: 4, ascii: 'ORTM'}
+  - key: tnn
+    name: 'Tencent TNN'
+    suffixes: ['.tnnmodel', '.tnnproto']
+  - key: tengine
+    name: 'Tengine'
+    suffixes: ['.tmfile']
+  - key: nncase-kmodel
+    name: 'Kendryte nncase (kmodel)'
+    suffixes: ['.kmodel']
+  - key: hailo-hef
+    name: 'Hailo HEF'
+    suffixes: ['.hef']
+  - key: paddle
+    name: 'PaddlePaddle inference model'
+    suffixes: ['.pdmodel', '.pdiparams']
+  - key: caffe
+    name: 'Caffe model'
+    suffixes: ['.caffemodel']
+  - key: pickle
+    name: 'Python pickle / joblib model'
+    suffixes: ['.pkl', '.pickle', '.joblib']
+    note: 'Pickle-based: loading it can run code. Load it only from a source you trust, or export the model to a data-only format.'
