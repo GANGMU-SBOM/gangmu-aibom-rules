@@ -98,3 +98,79 @@ runtimes:
       - 'TF_NewGraph'
       - 'TF_NewSession\w*'
       - 'tensorflow/c/c_api\.h'
+  - key: openvino
+    name: 'OpenVINO'
+    patterns:
+      - 'ov_core_create'
+      - 'ov::Core\b'
+      - 'openvino/openvino\.hpp'
+      - 'openvino/c/openvino\.h\b'
+  - key: tensorrt
+    name: 'NVIDIA TensorRT'
+    patterns:
+      - 'nvinfer1::\w+'
+      - 'createInferRuntime\b'
+      - 'createInferBuilder\b'
+      - 'NvInfer\.h\b'
+      - 'NvInferRuntime\.h\b'
+  - key: paddle-lite
+    name: 'Paddle Lite'
+    patterns:
+      - 'paddle::lite_api::\w+'
+      - 'CreatePaddlePredictor\w*'
+      - 'paddle_api\.h\b'
+  - key: tnn
+    name: 'Tencent TNN'
+    patterns:
+      - 'TNN_NS::TNN\b'
+      - 'tnn/core/tnn\.h\b'
+  - key: mace
+    name: 'MACE'
+    patterns:
+      - 'mace::MaceEngine\b'
+      - 'mace/public/mace\.h\b'
+  - key: nncase
+    name: 'Kendryte nncase runtime'
+    patterns:
+      - 'nncase::runtime::\w+'
+      - 'nncase/runtime/interpreter\.h\b'
+  - key: tengine
+    name: 'Tengine'
+    patterns:
+      - 'init_tengine'
+      - 'tengine/c_api\.h\b'
+  - key: xnnpack
+    name: 'XNNPACK'
+    patterns:
+      - 'xnn_initialize'
+      - 'xnn_create_\w+'
+      - 'xnnpack\.h\b'
+  - key: arm-nn
+    name: 'Arm NN'
+    patterns:
+      - 'armnn::IRuntime'
+      - 'armnn::Optimize\b'
+      - 'armnn/ArmNN\.hpp'
+  - key: hailort
+    name: 'HailoRT'
+    patterns:
+      - 'hailo_create_vdevice'
+      - 'hailo/hailort\.h\b'
+      - 'hailo/hailort\.hpp'
+  - key: whisper-cpp
+    name: 'whisper.cpp'
+    patterns:
+      - 'whisper_init_from_file\w*'
+      - 'whisper_init_from_buffer\w*'
+      - 'whisper\.h\b'
+  - key: libtorch
+    name: 'PyTorch C++ (LibTorch)'
+    patterns:
+      - 'torch::jit::load\b'
+      - '_load_for_mobile'
+      - 'torch/script\.h\b'
+  - key: litert
+    name: 'LiteRT'
+    patterns:
+      - 'LiteRtCreateModelFrom\w+'
+      - 'litert/c/litert_\w+\.h\b'
