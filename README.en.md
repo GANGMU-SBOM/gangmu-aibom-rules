@@ -5,8 +5,8 @@ inference runtimes `gangmu aibom` looks for in firmware and source. The tables u
 code; as data they can be extended with a small YAML pull request, with no tool release.
 
 ```bash
-# Not on PyPI yet: install from source (gangmu 0.9.0 or later; use git main until it is released)
-pip install git+https://github.com/GANGMU-SBOM/gangmu.git@main
+# This pack is not on PyPI yet: install it from source (needs gangmu 0.9.0 or later)
+pip install gangmu-sbom
 pip install git+https://github.com/GANGMU-SBOM/gangmu-aibom-rules.git
 gangmu aibom firmware/                 # installed packs of kind "aibom" are read automatically
 gangmu aibom firmware/ --rules rules/  # or point at a directory while editing
