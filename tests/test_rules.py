@@ -144,3 +144,16 @@ def test_wheel_carries_the_rules(tmp_path):
     assert "gangmu_aibom_rules/data/rulebase.json" in names
     assert "gangmu_aibom_rules/data/formats/model-formats.yaml" in names
     assert "gangmu_aibom_rules/data/runtimes/inference-runtimes.yaml" in names
+
+
+def test_the_three_places_that_name_the_version_agree():
+    """pyproject.toml, the package and the manifest were once 2026.10.9, 2026.10.9 and
+    2026.10.15; gangmu reports the manifest's, pip the package's."""
+    import json
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    declared = re.search(r'^version = "([^"]+)"', (root / "pyproject.toml").read_text(), re.M)
+    manifest = json.loads((root / "rules" / "rulebase.json").read_text())["version"]
+    assert declared and declared.group(1) == gangmu_aibom_rules.__version__ == manifest
