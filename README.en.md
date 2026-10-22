@@ -33,7 +33,7 @@ Three more runtime files cover NPU and microcontroller stacks (Coral Edge TPU, A
 QNN, Ascend CANN, Sophgo cviruntime, MindSpore Lite, TinyMaix, AIfES, FANN, ESP-NN, OpenCV DNN, emlearn), the Python entry points that load a model
 (ONNX Runtime, Transformers, `torch.load`/`torch.jit.load`, TFLite/LiteRT, Keras, Ultralytics), and the host names of hosted model APIs (OpenAI,
 Anthropic, Gemini, Alibaba DashScope, Zhipu, Baidu Qianfan). Added formats: ggml (magic `lmgg`, i.e. `0x67676d6c` little-endian), and
-`.espdl`, `.bmodel`, `.ptl` by extension.
+`.espdl`, `.bmodel`, `.ptl`, `.rkllm`, `.axmodel`, `.hbm`, `.litertlm` by extension. A fourth runtime file covers on-device LLM and China-market SoC NPU stacks (Rockchip RKLLM, Axera, Horizon, ONNX Runtime GenAI, LiteRT-LM), serving clients (Triton, MediaPipe) and the default local Ollama port; the Python file also covers scikit-learn, Sentence Transformers, Diffusers, LangChain and LlamaIndex.
 
 **How this differs from the SBOM rules.** This pack says which models, inference stacks and hosted endpoints a tree uses. Which open-source
 library and version a directory is, and its CVEs, is the SBOM's job (gangmu-rules). So runtime rules hold identifiers only (functions, types,

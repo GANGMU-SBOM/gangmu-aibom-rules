@@ -74,6 +74,10 @@ NEW_FORMATS = [
     ("m.espdl", b"\0" * 8, "esp-dl", False),
     ("m.bmodel", b"\0" * 8, "sophgo-bmodel", False),
     ("m.ptl", b"\0" * 8, "pytorch-lite", False),
+    ("qwen.rkllm", b"\0" * 8, "rkllm", False),
+    ("yolo.axmodel", b"\0" * 8, "axera-axmodel", False),
+    ("yolo.hbm", b"\0" * 8, "horizon-hbm", False),
+    ("gemma.litertlm", b"\0" * 8, "litertlm", False),
 ]
 
 
@@ -133,6 +137,19 @@ NEW_RUNTIMES = [
     ("a.c", b'#define HOST "dashscope.aliyuncs.com"\n', "dashscope-api"),
     ("a.c", b'#define HOST "open.bigmodel.cn"\n', "zhipu-api"),
     ("a.c", b'#define HOST "qianfan.baidubce.com"\n', "baidu-qianfan-api"),
+    ("a.c", b"rkllm_init(&handle, &param, callback);\n", "rkllm"),                     # rknn-llm
+    ("a.c", b"AX_ENGINE_Init(&init);\n", "axera-engine"),                              # ax-samples
+    ("a.c", b"hbDNNInitializeFromFiles(&packed, files, 1);\n", "horizon-dnn"),         # rdk_model_zoo
+    ("a.cc", b"OgaModel* model = nullptr;\n", "onnxruntime-genai"),
+    ("a.cc", b"LiteRtLmEngineSettings settings;\n", "litert-lm"),
+    ("a.cc", b"std::unique_ptr<tc::InferenceServerGrpcClient> client;\n", "triton-client"),
+    ("a.cc", b"auto task = mediapipe::tasks::vision::core::VisionTaskRunner::Create();\n", "mediapipe"),
+    ("a.c", b'#define OLLAMA "http://localhost:11434"\n', "ollama-local"),
+    ("a.py", b"from sklearn.ensemble import RandomForestClassifier\n", "scikit-learn"),
+    ("a.py", b"m = SentenceTransformer('all-MiniLM-L6-v2')\n", "sentence-transformers"),
+    ("a.py", b"p = DiffusionPipeline.from_pretrained('x')\n", "diffusers"),
+    ("a.py", b"from langchain_core.messages import HumanMessage\n", "langchain"),
+    ("a.py", b"from llama_index.core import VectorStoreIndex\n", "llama-index"),
 ]
 
 
@@ -161,6 +178,12 @@ def test_every_added_rule_has_a_sample():
     b"int fann_run_total = 0;\n",
     b"static tm_mdl_tx t;\n",
     b"int esp_nn = 1;\n",
+    b"int rkllm_initial = 0;\n",
+    b"AX_ENGINE_Initx(0);\n",
+    b"int OgaModelCount = 0;\n",
+    b"host = x11434;\n",
+    b"import sklearn_extra\n",
+    b"x = mediapipex.tasks()\n",
 ])
 def test_lookalike_identifiers_are_not_runtimes(tmp_path, line):
     (tmp_path / "a.c").write_bytes(line)

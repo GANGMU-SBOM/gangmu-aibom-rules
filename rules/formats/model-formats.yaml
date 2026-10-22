@@ -79,3 +79,15 @@ formats:
     name: 'PyTorch Lite interpreter model'
     suffixes: ['.ptl']
     note: 'Written by _save_for_lite_interpreter for the PyTorch mobile runtime.'
+  - key: rkllm
+    name: 'Rockchip RKLLM model'
+    suffixes: ['.rkllm']
+  - key: axera-axmodel
+    name: 'Axera AXModel'
+    suffixes: ['.axmodel']
+  - key: horizon-hbm
+    name: 'Horizon / D-Robotics HBM model'
+    suffixes: ['.hbm']
+  - key: litertlm
+    name: 'LiteRT-LM bundle'
+    suffixes: ['.litertlm']
