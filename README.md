@@ -23,12 +23,21 @@ gangmu aibom firmware/ --rules rules/  # 或者指定目录，便于本地改规
 | --- | --- |
 | `rules/formats/model-formats.yaml` | 模型文件格式：TFLite、GGUF、ExecuTorch、ONNX、safetensors、PyTorch、Keras/HDF5、Core ML、RKNN、MNN，另有 ncnn（`.param`，按文件头）、ONNX Runtime `.ort`（按文件头）、TNN、Tengine、Kendryte kmodel、Hailo HEF、PaddlePaddle、Caffe、pickle/joblib |
 | `rules/runtimes/inference-runtimes.yaml` | 推理运行时：TFLite Micro、TFLite、ONNX Runtime、CMSIS-NN、Edge Impulse、microTVM、NNoM、ExecuTorch、llama.cpp、ncnn、MNN、ESP-DL、STM32Cube.AI、RKNN、TensorFlow C，另有 OpenVINO、TensorRT、Paddle Lite、TNN、MACE、nncase、Tengine、XNNPACK、Arm NN、HailoRT、whisper.cpp、LibTorch、LiteRT |
+| `rules/runtimes/npu-and-tinyml-runtimes.yaml` | NPU 与 MCU 推理栈：Coral Edge TPU、Arm Ethos-U、Arm Compute Library、Android NNAPI、OpenHarmony NNRt、高通 QNN、昇腾 CANN、算能 cviruntime、MindSpore Lite、TinyMaix、AIfES、FANN、ESP-NN、OpenCV DNN、emlearn |
+| `rules/runtimes/python-ml-frameworks.yaml` | Python 里加载、运行模型的入口：ONNX Runtime、Transformers、PyTorch（`torch.load` / `torch.jit.load`）、TFLite/LiteRT、Keras、Ultralytics |
+| `rules/runtimes/hosted-model-apis.yaml` | 托管模型接口的域名：OpenAI、Anthropic、Gemini、阿里 DashScope、智谱 BigModel、百度千帆。代码里写了这些域名，就意味着输入会发给第三方 |
 
 两个文件的前半是 gangmu 内置识别表的原样导出，`tests/test_rules.py` 会逐项比对，防止两边悄悄分叉；后半是新增项。同名 `key` 替换内置项，新 `key` 新增。
 新增的运行时标识符都在对应上游源码（OpenVINO、TensorRT、Paddle Lite、TNN、MACE、nncase、Tengine、XNNPACK、Arm NN、HailoRT、whisper.cpp、LiteRT）里核对过；
 文件头只收上游源码里能查到的：ncnn 文本 `.param` 以 `7767517` 开头，ORT 格式是 offset 4 处的 `ORTM`。
 Kendryte kmodel 和 Hailo HEF 的上游源码里有标识常量（`KMDL`、`0x01484546`），但没有样例文件确认落盘字节序，所以只按扩展名认，输出里标 `by extension`。
 pickle/joblib 只按扩展名认，并提示加载会执行代码。
+后来新增的格式：ggml（whisper.cpp 模型，文件头 `lmgg`，即小端写出的 `0x67676d6c`）；ESP-DL `.espdl`、算能 `.bmodel`、PyTorch Lite `.ptl` 只按扩展名认。
+
+## 和 SBOM 的分工
+
+这个规则包只回答"这里有什么模型、用了什么推理栈、数据发往哪里"。"这是哪个开源库、哪个版本、有哪些 CVE"是 SBOM 的事，规则在 [gangmu-rules](https://github.com/GANGMU-SBOM/gangmu-rules)，这里不重复。
+所以运行时规则只写标识符（函数、类型、头文件、域名），不写目录特征、文件哈希或版本探针。同一个项目可能同时出现在两边：SBOM 说"目录里有 ONNX Runtime 1.17"，AIBOM 说"源码调用了 `OrtCreateSession`"，两条证据互相印证而不是互相替代。
 
 ## 规则格式
 
@@ -54,7 +63,7 @@ runtimes:
     patterns: ['acme_infer\w*', 'acme/rt\.h']   # 标识符的正则；扫描会在前面加标识符边界
 ```
 
-运行时在 `.c .cc .cpp .h .hpp .ino .py` 等源码里按标识符认，**不代表它编进了固件**。
+运行时在 `.c .cc .cpp .h .hpp .ino .py` 等源码里按标识符认，**不代表它编进了固件**。扫描不读 `.json`、`.yaml` 这类配置，所以写在配置里的接口域名看不到。
 编进 C 数组的 TFLite 模型、GGUF 头里的架构这类需要读内容的识别仍在工具里。
 
 ## 许可

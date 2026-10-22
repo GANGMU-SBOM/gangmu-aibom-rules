@@ -70,6 +70,10 @@ NEW_FORMATS = [
     ("net.caffemodel", b"\0" * 8, "caffe", False),
     ("clf.pkl", b"\x80\x04.", "pickle", False),
     ("clf.joblib", b"\x80\x04.", "pickle", False),
+    ("ggml-base.en.bin", b"lmgg" + b"\0" * 16, "ggml", True),          # GGML_FILE_MAGIC, whisper.cpp
+    ("m.espdl", b"\0" * 8, "esp-dl", False),
+    ("m.bmodel", b"\0" * 8, "sophgo-bmodel", False),
+    ("m.ptl", b"\0" * 8, "pytorch-lite", False),
 ]
 
 
@@ -102,6 +106,33 @@ NEW_RUNTIMES = [
     ("a.c", b"ctx = whisper_init_from_file_with_params(path, p);\n", "whisper-cpp"),
     ("a.cc", b'auto m = torch::jit::load("m.pt");\n', "libtorch"),
     ("a.cc", b"LiteRtCreateModelFromFile(path, &model);\n", "litert"),
+    ("a.cc", b"auto* m = edgetpu::EdgeTpuManager::GetSingleton();\n", "edgetpu"),             # libedgetpu
+    ("a.c", b"ethosu_init(&drv, base, 0, 0, 0, 1);\n", "ethos-u"),                         # ethos-u-core-driver
+    ("a.cc", b"arm_compute::CLTensor input;\n", "arm-compute-library"),
+    ("a.cc", b"ANeuralNetworksModel_create(&model);\n", "nnapi"),
+    ("a.c", b"OH_NNModel *model = OH_NNModel_Construct();\n", "ohos-nnrt"),                # OpenHarmony
+    ("a.cc", b"QnnInterface_getProviders(&providers, &n);\n", "qualcomm-qnn"),             # ONNX Runtime QNN EP
+    ("a.c", b"aclInit(NULL);\n", "ascend-cann"),
+    ("a.c", b"CVI_NN_RegisterModel(path, &model);\n", "cviruntime"),
+    ("a.cc", b"std::vector<mindspore::MSTensor> in;\n", "mindspore-lite"),
+    ("a.c", b"static tm_mdl_t mdl;\n", "tinymaix"),
+    ("a.c", b"aitensor_t x = AITENSOR_2D_F32(shape, data);\n", "aifes"),
+    ("a.c", b'ann = fann_create_from_file("net.net");\n', "fann"),
+    ("a.c", b"esp_nn_conv_s8_ansi(&in, &f, &o);\n", "esp-nn"),
+    ("a.cc", b"cv::dnn::Net net = cv::dnn::readNetFromONNX(path);\n", "opencv-dnn"),
+    ("a.c", b"eml_net_predict(&model, x, n);\n", "emlearn"),
+    ("a.py", b"sess = onnxruntime.InferenceSession('m.onnx')\n", "onnxruntime-python"),
+    ("a.py", b"from transformers import AutoTokenizer\n", "transformers"),
+    ("a.py", b"m = torch.jit.load('m.pt')\n", "pytorch-python"),
+    ("a.py", b"it = tf.lite.Interpreter(model_path='m.tflite')\n", "tflite-python"),
+    ("a.py", b"m = keras.models.load_model('m.keras')\n", "keras-python"),
+    ("a.py", b"from ultralytics import YOLO\n", "ultralytics"),
+    ("a.c", b'#define HOST "api.openai.com"\n', "openai-api"),
+    ("a.c", b'#define HOST "api.anthropic.com"\n', "anthropic-api"),
+    ("a.c", b'#define HOST "generativelanguage.googleapis.com"\n', "gemini-api"),
+    ("a.c", b'#define HOST "dashscope.aliyuncs.com"\n', "dashscope-api"),
+    ("a.c", b'#define HOST "open.bigmodel.cn"\n', "zhipu-api"),
+    ("a.c", b'#define HOST "qianfan.baidubce.com"\n', "baidu-qianfan-api"),
 ]
 
 
@@ -123,6 +154,13 @@ def test_every_added_rule_has_a_sample():
     b"void whisper_loud(void);\n",
     b"int my_init_tengine_x;\n",
     b'run("models/whisper.hef");\n',        # "whisper.h" is a prefix of "whisper.hef"
+    b'host = "myapi.openai.com"\n',        # a longer host name, not the API
+    b'host = "xapi.anthropic.com"\n',
+    b"blob = torch.loads(data)\n",           # not torch.load(
+    b"import onnxruntime_extensions\n",
+    b"int fann_run_total = 0;\n",
+    b"static tm_mdl_tx t;\n",
+    b"int esp_nn = 1;\n",
 ])
 def test_lookalike_identifiers_are_not_runtimes(tmp_path, line):
     (tmp_path / "a.c").write_bytes(line)
@@ -157,3 +195,13 @@ def test_the_three_places_that_name_the_version_agree():
     declared = re.search(r'^version = "([^"]+)"', (root / "pyproject.toml").read_text(), re.M)
     manifest = json.loads((root / "rules" / "rulebase.json").read_text())["version"]
     assert declared and declared.group(1) == gangmu_aibom_rules.__version__ == manifest
+
+
+def test_a_scan_reports_hosted_apis_python_loaders_and_a_whisper_model(tmp_path):
+    """End to end: a hosted endpoint, a Python loader and a legacy ggml model are all inventoried."""
+    (tmp_path / "chat.c").write_text('#define LLM_HOST "api.openai.com"\n')
+    (tmp_path / "run.py").write_text("import onnxruntime\nm = torch.load('w.pt')\n")
+    (tmp_path / "ggml-tiny.bin").write_bytes(b"lmgg" + b"\0" * 32)
+    result = scan_aibom(tmp_path, rules=_rules())
+    assert {"openai-api", "onnxruntime-python", "pytorch-python"} <= {h.runtime.key for h in result.runtimes}
+    assert [(m.fmt.key, m.verified) for m in result.models] == [("ggml", True)]

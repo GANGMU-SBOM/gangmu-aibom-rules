@@ -7,7 +7,7 @@ data; the code that reads them lives in gangmu.
 
 from pathlib import Path
 
-__version__ = "2026.10.15"
+__version__ = "2026.10.22"
 
 
 def path() -> Path:

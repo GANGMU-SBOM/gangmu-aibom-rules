@@ -1,0 +1,31 @@
+# Hosted model endpoints. A firmware or service that calls one of these sends its input to a
+# third party, which an AI inventory has to record as much as a local model file. The scan reads
+# source files only (.c .h .py ...), so a host name kept in a JSON or YAML config is not seen.
+# Host names are the ones the vendors' own SDKs use (openai, anthropic, dashscope, zhipuai,
+# google-generativeai and qianfan wheels).
+runtimes:
+  - key: openai-api
+    name: 'OpenAI API (hosted)'
+    patterns:
+      - 'api\.openai\.com'
+  - key: anthropic-api
+    name: 'Anthropic API (hosted)'
+    patterns:
+      - 'api\.anthropic\.com'
+  - key: gemini-api
+    name: 'Google Gemini API (hosted)'
+    patterns:
+      - 'generativelanguage\.googleapis\.com'
+  - key: dashscope-api
+    name: 'Alibaba DashScope / Qwen API (hosted)'
+    patterns:
+      - 'dashscope(?:-intl)?\.aliyuncs\.com'
+  - key: zhipu-api
+    name: 'Zhipu BigModel API (hosted)'
+    patterns:
+      - 'open\.bigmodel\.cn'
+  - key: baidu-qianfan-api
+    name: 'Baidu Qianfan / AI Cloud API (hosted)'
+    patterns:
+      - 'qianfan\.baidubce\.com'
+      - 'aip\.baidubce\.com'
