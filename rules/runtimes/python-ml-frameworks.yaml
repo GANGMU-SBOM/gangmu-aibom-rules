@@ -1,0 +1,38 @@
+# Python entry points for loading and running a model. gangmu reads .py files, so a model server or an
+# on-device script shows up here even when there is no C code. Names were checked in the published
+# wheels or sources: onnxruntime, transformers, ultralytics, keras, ai-edge-litert, TensorFlow
+# (lite/python) and PyTorch (torch/jit).
+runtimes:
+  - key: onnxruntime-python
+    name: 'ONNX Runtime (Python)'
+    patterns:
+      - 'import onnxruntime\b'
+      - 'from onnxruntime import'
+      - '(?:onnxruntime|ort)\.InferenceSession\b'
+  - key: transformers
+    name: 'Hugging Face Transformers'
+    patterns:
+      - 'from transformers import'
+      - 'import transformers\b'
+      - 'AutoModel\w*\.from_pretrained'
+  - key: pytorch-python
+    name: 'PyTorch (Python)'
+    patterns:
+      - 'torch\.jit\.load\b'
+      - 'torch\.load\('
+      - '_load_for_lite_interpreter\b'
+  - key: tflite-python
+    name: 'TensorFlow Lite / LiteRT (Python)'
+    patterns:
+      - 'tf\.lite\.Interpreter\b'
+      - 'tflite_runtime\.interpreter\b'
+      - 'ai_edge_litert\.interpreter\b'
+  - key: keras-python
+    name: 'Keras (Python)'
+    patterns:
+      - 'keras\.models\.load_model\b'
+  - key: ultralytics
+    name: 'Ultralytics YOLO'
+    patterns:
+      - 'from ultralytics import'
+      - 'ultralytics\.YOLO\b'

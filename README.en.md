@@ -29,6 +29,17 @@ TensorRT, Paddle Lite, TNN, MACE, nncase, Tengine, XNNPACK, Arm NN, HailoRT, whi
 magic bytes were checked against the upstream sources. kmodel and HEF have identifier constants upstream but no sample file
 to confirm their byte order, so they are matched by extension only.
 
+Three more runtime files cover NPU and microcontroller stacks (Coral Edge TPU, Arm Ethos-U, Arm Compute Library, NNAPI, OpenHarmony NNRt, Qualcomm
+QNN, Ascend CANN, Sophgo cviruntime, MindSpore Lite, TinyMaix, AIfES, FANN, ESP-NN, OpenCV DNN, emlearn), the Python entry points that load a model
+(ONNX Runtime, Transformers, `torch.load`/`torch.jit.load`, TFLite/LiteRT, Keras, Ultralytics), and the host names of hosted model APIs (OpenAI,
+Anthropic, Gemini, Alibaba DashScope, Zhipu, Baidu Qianfan). Added formats: ggml (magic `lmgg`, i.e. `0x67676d6c` little-endian), and
+`.espdl`, `.bmodel`, `.ptl` by extension.
+
+**How this differs from the SBOM rules.** This pack says which models, inference stacks and hosted endpoints a tree uses. Which open-source
+library and version a directory is, and its CVEs, is the SBOM's job (gangmu-rules). So runtime rules hold identifiers only (functions, types,
+headers, host names), never directory markers, hashes or version probes. The scan reads source files, not `.json` or `.yaml`, so a host name kept
+in a config file is not seen.
+
 A runtime is recognised by an identifier in a source file; that does not mean it is in the build. Detections that
 need to read content (a TensorFlow Lite model compiled into a C array, the architecture in a GGUF header) stay
 in the tool. Rules: CDLA-Permissive-2.0; packaging code: Apache-2.0. See [CONTRIBUTING.md](CONTRIBUTING.md).

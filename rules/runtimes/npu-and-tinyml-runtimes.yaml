@@ -1,0 +1,90 @@
+# Inference stacks for NPUs, DSPs and microcontrollers that inference-runtimes.yaml leaves out.
+# Every identifier below was found in the upstream project's own source or headers: libedgetpu,
+# ethos-u-core-driver, ComputeLibrary, TensorFlow Lite (NNAPI delegate), OpenHarmony
+# ai_neural_network_runtime, ONNX Runtime's QNN and CANN providers, Sophgo cviruntime,
+# MindSpore, TinyMaix, AIfES, FANN, ESP-NN, OpenCV and emlearn.
+runtimes:
+  - key: edgetpu
+    name: 'Google Coral Edge TPU runtime'
+    patterns:
+      - 'edgetpu::EdgeTpu(?:Context|Manager)\b'
+      - 'edgetpu_c\.h\b'
+      - 'edgetpu_create_delegate\b'
+      - 'edgetpu_list_devices\b'
+  - key: ethos-u
+    name: 'Arm Ethos-U NPU driver'
+    patterns:
+      - 'ethosu_init\w*'
+      - 'ethosu_invoke\w*'
+      - 'ethosu_driver\.h\b'
+  - key: arm-compute-library
+    name: 'Arm Compute Library'
+    patterns:
+      - 'arm_compute::(?:CL|NE)\w+'
+      - 'arm_compute::graph::\w+'
+      - 'arm_compute/runtime/\w+(?:/\w+)*\.h\b'
+  - key: nnapi
+    name: 'Android NNAPI'
+    patterns:
+      - 'ANeuralNetworks(?:Model|Compilation|Execution)_\w+'
+      - 'NeuralNetworksTypes\.h\b'
+  - key: ohos-nnrt
+    name: 'OpenHarmony Neural Network Runtime'
+    patterns:
+      - 'OH_NN(?:Model|Compilation|Executor)_\w+'
+      - 'neural_network_runtime(?:_type)?\.h\b'
+  - key: qualcomm-qnn
+    name: 'Qualcomm AI Engine Direct (QNN)'
+    patterns:
+      - 'QnnInterface_getProviders\b'
+      - 'QnnGraph_\w+'
+      - 'QnnContext_\w+'
+      - 'QNN_API_VERSION_MAJOR\b'
+  - key: ascend-cann
+    name: 'Huawei Ascend CANN (ACL)'
+    patterns:
+      - 'aclInit\b'
+      - 'aclmdl\w+'
+      - 'acl/acl\.h\b'
+  - key: cviruntime
+    name: 'Sophgo / Cvitek cviruntime'
+    patterns:
+      - 'CVI_NN_\w+'
+      - 'cviruntime(?:_context|_extra)?\.h\b'
+  - key: mindspore-lite
+    name: 'MindSpore Lite'
+    patterns:
+      - 'mindspore::MSTensor\b'
+      - 'mindspore::lite::\w+'
+  - key: tinymaix
+    name: 'TinyMaix'
+    patterns:
+      - 'tm_mdl_t\b'
+      - 'tinymaix\.h\b'
+  - key: aifes
+    name: 'AIfES'
+    patterns:
+      - 'aitensor_t\b'
+      - 'aimodel_t\b'
+      - 'AIFES_E_\w+'
+  - key: fann
+    name: 'FANN (Fast Artificial Neural Network)'
+    patterns:
+      - 'fann_create_(?:from_file|standard\w*|sparse\w*|shortcut\w*)'
+      - 'fann_run\b'
+      - '(?:float|double|fixed)fann\.h\b'
+  - key: esp-nn
+    name: 'ESP-NN (Espressif optimised neural-network kernels)'
+    patterns:
+      - 'esp_nn_\w+'
+  - key: opencv-dnn
+    name: 'OpenCV DNN module'
+    patterns:
+      - 'cv::dnn::(?:readNet\w*|blobFromImage\w*)'
+      - 'opencv2/dnn(?:/dnn)?\.hpp\b'
+      - 'cv2\.dnn\.\w+'
+  - key: emlearn
+    name: 'emlearn'
+    patterns:
+      - 'eml_net_predict\w*'
+      - 'eml_trees_predict\w*'

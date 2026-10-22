@@ -65,3 +65,17 @@ formats:
     name: 'Python pickle / joblib model'
     suffixes: ['.pkl', '.pickle', '.joblib']
     note: 'Pickle-based: loading it can run code. Load it only from a source you trust, or export the model to a data-only format.'
+  - key: ggml
+    name: 'ggml model (whisper.cpp and early llama.cpp)'
+    magic: {offset: 0, ascii: 'lmgg'}
+    note: 'The file starts with the 32-bit value 0x67676d6c written little-endian (GGML_FILE_MAGIC in whisper.cpp). GGUF replaced it for llama.cpp.'
+  - key: esp-dl
+    name: 'ESP-DL model'
+    suffixes: ['.espdl']
+  - key: sophgo-bmodel
+    name: 'Sophgo BModel'
+    suffixes: ['.bmodel']
+  - key: pytorch-lite
+    name: 'PyTorch Lite interpreter model'
+    suffixes: ['.ptl']
+    note: 'Written by _save_for_lite_interpreter for the PyTorch mobile runtime.'
