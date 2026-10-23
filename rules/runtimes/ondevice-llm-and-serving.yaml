@@ -1,0 +1,52 @@
+# On-device LLM stacks, NPU runtimes from China-market SoC vendors, model-serving clients and the local
+# Ollama server port. Every identifier was found in the upstream project's own source or headers:
+# airockchip/rknn-llm, AXERA-TECH/ax-samples, D-Robotics/rdk_model_zoo, onnxruntime-genai, LiteRT-LM,
+# triton-inference-server/client, MediaPipe and the Ollama docs.
+runtimes:
+  - key: rkllm
+    name: 'Rockchip RKLLM runtime'
+    patterns:
+      - 'rkllm_init\b'
+      - 'rkllm_run\b'
+      - 'rkllm_destroy\b'
+      - 'rkllm\.h\b'
+  - key: axera-engine
+    name: 'Axera AX Engine'
+    patterns:
+      - 'AX_ENGINE_Init\b'
+      - 'AX_ENGINE_RunSync\b'
+      - 'AX_ENGINE_DestroyHandle\b'
+      - 'ax_engine_api\.h\b'
+  - key: horizon-dnn
+    name: 'Horizon Robotics / D-Robotics DNN runtime'
+    patterns:
+      - 'hbDNNInitializeFromFiles\b'
+      - 'hbDNNGetModelHandle\b'
+      - 'hb_dnn\.h\b'
+  - key: onnxruntime-genai
+    name: 'ONNX Runtime GenAI'
+    patterns:
+      - 'Oga(?:Model|Generator|Tokenizer|Config)\b'
+      - 'onnxruntime_genai\b'
+  - key: litert-lm
+    name: 'LiteRT-LM (on-device LLM runtime)'
+    patterns:
+      - 'LiteRtLm(?:Engine|Status)\w*'
+      - 'litert_lm\.h\b'
+  - key: triton-client
+    name: 'NVIDIA Triton Inference Server client'
+    patterns:
+      - 'InferenceServer(?:Grpc|Http)Client\b'
+      - 'triton::client\b'
+      - 'tritonclient\.(?:http|grpc)\b'
+  - key: mediapipe
+    name: 'MediaPipe Tasks'
+    patterns:
+      - 'mediapipe::tasks::\w+'
+      - 'from mediapipe\b'
+      - 'import mediapipe\b'
+  - key: ollama-local
+    name: 'Ollama (local server on its default port)'
+    patterns:
+      - 'localhost:11434'
+      - '127\.0\.0\.1:11434'

@@ -24,7 +24,8 @@ gangmu aibom firmware/ --rules rules/  # 或者指定目录，便于本地改规
 | `rules/formats/model-formats.yaml` | 模型文件格式：TFLite、GGUF、ExecuTorch、ONNX、safetensors、PyTorch、Keras/HDF5、Core ML、RKNN、MNN，另有 ncnn（`.param`，按文件头）、ONNX Runtime `.ort`（按文件头）、TNN、Tengine、Kendryte kmodel、Hailo HEF、PaddlePaddle、Caffe、pickle/joblib |
 | `rules/runtimes/inference-runtimes.yaml` | 推理运行时：TFLite Micro、TFLite、ONNX Runtime、CMSIS-NN、Edge Impulse、microTVM、NNoM、ExecuTorch、llama.cpp、ncnn、MNN、ESP-DL、STM32Cube.AI、RKNN、TensorFlow C，另有 OpenVINO、TensorRT、Paddle Lite、TNN、MACE、nncase、Tengine、XNNPACK、Arm NN、HailoRT、whisper.cpp、LibTorch、LiteRT |
 | `rules/runtimes/npu-and-tinyml-runtimes.yaml` | NPU 与 MCU 推理栈：Coral Edge TPU、Arm Ethos-U、Arm Compute Library、Android NNAPI、OpenHarmony NNRt、高通 QNN、昇腾 CANN、算能 cviruntime、MindSpore Lite、TinyMaix、AIfES、FANN、ESP-NN、OpenCV DNN、emlearn |
-| `rules/runtimes/python-ml-frameworks.yaml` | Python 里加载、运行模型的入口：ONNX Runtime、Transformers、PyTorch（`torch.load` / `torch.jit.load`）、TFLite/LiteRT、Keras、Ultralytics |
+| `rules/runtimes/python-ml-frameworks.yaml` | Python 里加载、运行模型的入口：ONNX Runtime、Transformers、PyTorch（`torch.load` / `torch.jit.load`）、TFLite/LiteRT、Keras、Ultralytics，以及 scikit-learn、Sentence Transformers、Diffusers、LangChain、LlamaIndex |
+| `rules/runtimes/ondevice-llm-and-serving.yaml` | 端侧大模型和国内 SoC 的 NPU 栈：瑞芯微 RKLLM、爱芯 Axera、地平线 DNN、ONNX Runtime GenAI、LiteRT-LM；推理服务客户端：Triton、MediaPipe；本机 Ollama 默认端口 `11434` |
 | `rules/runtimes/hosted-model-apis.yaml` | 托管模型接口的域名：OpenAI、Anthropic、Gemini、阿里 DashScope、智谱 BigModel、百度千帆。代码里写了这些域名，就意味着输入会发给第三方 |
 
 两个文件的前半是 gangmu 内置识别表的原样导出，`tests/test_rules.py` 会逐项比对，防止两边悄悄分叉；后半是新增项。同名 `key` 替换内置项，新 `key` 新增。
@@ -32,7 +33,7 @@ gangmu aibom firmware/ --rules rules/  # 或者指定目录，便于本地改规
 文件头只收上游源码里能查到的：ncnn 文本 `.param` 以 `7767517` 开头，ORT 格式是 offset 4 处的 `ORTM`。
 Kendryte kmodel 和 Hailo HEF 的上游源码里有标识常量（`KMDL`、`0x01484546`），但没有样例文件确认落盘字节序，所以只按扩展名认，输出里标 `by extension`。
 pickle/joblib 只按扩展名认，并提示加载会执行代码。
-后来新增的格式：ggml（whisper.cpp 模型，文件头 `lmgg`，即小端写出的 `0x67676d6c`）；ESP-DL `.espdl`、算能 `.bmodel`、PyTorch Lite `.ptl` 只按扩展名认。
+后来新增的格式：ggml（whisper.cpp 模型，文件头 `lmgg`，即小端写出的 `0x67676d6c`）；ESP-DL `.espdl`、算能 `.bmodel`、PyTorch Lite `.ptl`、瑞芯微 `.rkllm`、爱芯 `.axmodel`、地平线 `.hbm`、LiteRT-LM `.litertlm` 只按扩展名认。
 
 ## 和 SBOM 的分工
 

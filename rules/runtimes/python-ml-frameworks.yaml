@@ -1,7 +1,8 @@
 # Python entry points for loading and running a model. gangmu reads .py files, so a model server or an
 # on-device script shows up here even when there is no C code. Names were checked in the published
 # wheels or sources: onnxruntime, transformers, ultralytics, keras, ai-edge-litert, TensorFlow
-# (lite/python) and PyTorch (torch/jit).
+# (lite/python), PyTorch (torch/jit), scikit-learn, sentence-transformers, diffusers, langchain-core
+# and llama-index-core.
 runtimes:
   - key: onnxruntime-python
     name: 'ONNX Runtime (Python)'
@@ -36,3 +37,27 @@ runtimes:
     patterns:
       - 'from ultralytics import'
       - 'ultralytics\.YOLO\b'
+  - key: scikit-learn
+    name: 'scikit-learn'
+    patterns:
+      - 'from sklearn[.\w]* import'
+      - 'import sklearn\b'
+  - key: sentence-transformers
+    name: 'Sentence Transformers'
+    patterns:
+      - 'from sentence_transformers import'
+      - 'SentenceTransformer\('
+  - key: diffusers
+    name: 'Hugging Face Diffusers'
+    patterns:
+      - 'from diffusers import'
+      - 'DiffusionPipeline\.from_pretrained'
+  - key: langchain
+    name: 'LangChain'
+    patterns:
+      - 'from langchain_core[.\w]* import'
+      - 'from langchain\.\w+ import'
+  - key: llama-index
+    name: 'LlamaIndex'
+    patterns:
+      - 'from llama_index\.core import'
